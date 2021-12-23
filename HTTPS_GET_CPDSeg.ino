@@ -95,7 +95,7 @@ void loop() {
 
     Serial.printf("Using fingerprint '%s'\n", fingerprint);
     httpsClient.setFingerprint(fingerprint);
-    httpsClient.setTimeout(15000); // 15 Seconds
+    httpsClient.setTimeout(5000); // 5 Seconds
     //delay(1000);
 
     //Serial.print("HTTPS Connecting");
@@ -149,5 +149,5 @@ void loop() {
 
   }
 
-  delay(5000);
+  delay(1000);
 }
