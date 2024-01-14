@@ -7,13 +7,14 @@
 #define DHTPIN D1     // Digital pin connected to the DHT sensor
 #define DHTTYPE DHT22 // En mi caso AM2302
 
+//com serie tx-rx y rx-tx gpio02=D4 a gnd y on-off F.Al.
 //Declaro las variables sensores
 int ldr1;//pin A0
 String ldr;
 String hum;
 String temp;
 byte vol1;// pin D2 gpio4 (el D3 gpio0 y D4 gpio2 tienen que arrancar en alto)
-byte incendio1;//pin D5
+byte incendio1;//pin D51
 byte inundacion1;//pin D6
 String vol;
 String incendio;
@@ -22,13 +23,13 @@ String inundacion;
 DHT dht(DHTPIN, DHTTYPE); // Inicializo el sensor
 
 const char *ssid = "vodafoneA918";  //ENTER YOUR WIFI SETTINGS
-const char *password = "zapic@N14";
+const char *password = "zapic@N14";//JUM-nJI2733
 
-const char *host = "www.cpdseg.online";
+const char *host = "cpdseg.tech";
 const int httpsPort = 443;  //HTTPS= 443 and HTTP = 80
 
-//certificado de cpdseg
-const char fingerprint[] PROGMEM = "49 2B 1F 03 E6 96 EA 07 D6 66 9B 2E 43 FD A4 6C CA 5E 65 BA";
+//certificado de cpdseg 5f2de78f58176cdb8a40836becbccdbd4aa82ce5 ahora 042c684b6d69ec6e98683a5c82b51fee5ade
+const char fingerprint[] PROGMEM = "042c684b6d69ec6e98683a5c82b51fee5ade";//042c684b6d69ec6e98683a5c82b51fee5ade
 
 void setup() {
   delay(10);
@@ -55,8 +56,8 @@ void loop() {
 
   if (WiFi.status() == WL_CONNECTED) { //Check WiFi connection status
 
-    WiFiClientSecure httpsClient;
-
+    WiFiClientSecure  httpsClient;
+    
     //Leo los valores de los sensores
     ldr1 = analogRead(A0);
     ldr = String(ldr1);
@@ -75,30 +76,32 @@ void loop() {
 
     if (isnan(hum1) || isnan(temp))  {
       Serial.println(F("Failed to read from DHT sensor!"));
-      return;
+
+      // return;
     }
 
-    Serial.print("Humedad: ");
-    Serial.print(hum);
-    Serial.println(" % ");
-    Serial.print("Temperatura: ");
-    Serial.print(temp);
-    Serial.println(" °C ");
-    Serial.print("Volumetrico: ");
-    Serial.println(vol);
-    Serial.print("Incendio: ");
-    Serial.println(incendio);
-    Serial.print("Inundacion: ");
-    Serial.println(inundacion);
+    /* Serial.print("Humedad: ");
+      Serial.print(hum);
+      Serial.println(" % ");
+      Serial.print("Temperatura: ");
+      Serial.print(temp);
+      Serial.println(" °C ");
+      Serial.print("Volumetrico: ");
+      Serial.println(vol);
+      Serial.print("Incendio: ");
+      Serial.println(incendio);
+      Serial.print("Inundacion: ");
+      Serial.println(inundacion);*/
 
-    String datos_a_enviar = "ldr=" + ldr + "&hum=" + hum + "&temp=" + temp + "&vol=" + vol+ "&incendio=" + incendio+ "&inundacion=" + inundacion;
+    String datos_a_enviar = "ldr=" + ldr + "&hum=" + hum + "&temp=" + temp + "&vol=" + vol + "&incendio=" + incendio + "&inundacion=" + inundacion;
 
-    Serial.printf("Using fingerprint '%s'\n", fingerprint);
-    httpsClient.setFingerprint(fingerprint);
-    httpsClient.setTimeout(5000); // 5 Seconds
+    //Serial.printf("Using fingerprint '%s'\n", fingerprint);
+    httpsClient.setInsecure();
+    //httpsClient.setFingerprint(fingerprint);
+    httpsClient.setTimeout(4000); //  Seconds
     //delay(1000);
 
-    //Serial.print("HTTPS Connecting");
+    Serial.print("HTTPS Connecting ?");
     int r = 0; //retry counter
     while ((!httpsClient.connect(host, httpsPort)) && (r < 30)) {
       delay(100);
@@ -149,5 +152,5 @@ void loop() {
 
   }
 
-  delay(1000);
+  delay(100);
 }
