@@ -119,7 +119,7 @@ void loop() {
     String code, Link;
 
 
-    Link = "/Controller/Events/EventsSensorsReceiver.php?" + datos_a_enviar;
+    Link = "/Controller/Events/xxxxx.php?" + datos_a_enviar;
 
 
     Serial.print("requesting URL: ");
