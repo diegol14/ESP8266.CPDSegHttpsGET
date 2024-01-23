@@ -22,10 +22,10 @@ String inundacion;
 
 DHT dht(DHTPIN, DHTTYPE); // Inicializo el sensor
 
-const char *ssid = "xxxxx";  //ENTER YOUR WIFI SETTINGS
-const char *password = "xxxxx";//JUM-nJI2733
+const char *ssid = "vodafoneA918";  //ENTER YOUR WIFI SETTINGS
+const char *password = "zapic@N14";//JUM-nJI2733
 
-const char *host = "xxxxxx.tech";
+const char *host = "cpdseg.tech";
 const int httpsPort = 443;  //HTTPS= 443 and HTTP = 80
 
 //certificado de cpdseg 5f2de78f58176cdb8a40836becbccdbd4aa82ce5 ahora 042c684b6d69ec6e98683a5c82b51fee5ade
@@ -119,7 +119,7 @@ void loop() {
     String code, Link;
 
 
-    Link = "/Controller/Events/xxxxx.php?" + datos_a_enviar;
+    Link = "/Controller/Events/EventsSensorsReceiver.php?" + datos_a_enviar;
 
 
     Serial.print("requesting URL: ");
