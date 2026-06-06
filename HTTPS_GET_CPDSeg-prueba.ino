@@ -22,10 +22,12 @@ String inundacion;
 
 DHT dht(DHTPIN, DHTTYPE); // Inicializo el sensor
 
-const char *ssid = "vodafoneA918";  //ENTER YOUR WIFI SETTINGS
-const char *password = "zapic@N14";//JUM-nJI2733
+#include "secrets.h"  // define WIFI_SSID, WIFI_PASS y SENSOR_TOKEN (archivo aparte, NO se sube)
+const char *ssid = WIFI_SSID;
+const char *password = WIFI_PASS;
+const char *sensorToken = SENSOR_TOKEN;
 
-const char *host = "cpdseg.tech";
+const char *host = "cpdseg.online";
 const int httpsPort = 443;  //HTTPS= 443 and HTTP = 80
 
 //certificado de cpdseg 5f2de78f58176cdb8a40836becbccdbd4aa82ce5 ahora 042c684b6d69ec6e98683a5c82b51fee5ade
@@ -93,7 +95,7 @@ void loop() {
       Serial.print("Inundacion: ");
       Serial.println(inundacion);*/
 
-    String datos_a_enviar = "ldr=" + ldr + "&hum=" + hum + "&temp=" + temp + "&vol=" + vol + "&incendio=" + incendio + "&inundacion=" + inundacion;
+    String datos_a_enviar = "ldr=" + ldr + "&hum=" + hum + "&temp=" + temp + "&vol=" + vol + "&incendio=" + incendio + "&inundacion=" + inundacion + "&token=" + sensorToken;
 
     //Serial.printf("Using fingerprint '%s'\n", fingerprint);
     httpsClient.setInsecure();
@@ -152,5 +154,5 @@ void loop() {
 
   }
 
-  delay(100);
+  delay(4000);  // enviar cada ~4 s (antes 100 ms: machacaba el servidor)
 }
